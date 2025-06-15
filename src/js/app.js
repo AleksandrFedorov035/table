@@ -1,33 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const tableHeader = Array.from(document.querySelectorAll("th"));
-  tableHeader.forEach(th => {
-    th.addEventListener("click", () => {
-      const field = th.getAttribute('data-field');
-      const direction = th.getAttribute('data-sort-direction');
-      sortTable(field, direction === 'asc' ? 'desc' : 'asc');
-    });
-  });
-});
+import TableGenerator from "./components/TableGenerator";
 
-function sortTable(field, direction) {
-  const tbody = document.querySelector('tbody');
-  const rows = Array.from(tbody.querySelectorAll('tr'));
+const data = [
+  { address: '0.0.0.0', mask: '0.0.0.0', interface: 'Подключение Ethernet' },
+  { address: '10.30.0.24', mask: '0.0.0.0', interface: 'Гостевая сеть' },
+  { address: '192.168.1.1.24', mask: '0.0.0.0', interface: 'Домашняя сеть' },
+  { address: '193.174.1.24', mask: '0.0.0.0', interface: 'Подключение Ethernet' },
+  { address: '193.175.0.25', mask: '193.174.10', interface: 'Подключение Ethernet' },
+  { address: '193.175.22.32', mask: '193.174.1', interface: 'Подключение Ethernet' },
+  { address: '193.175.22.33', mask: '193.174.1', interface: 'Подключение Ethernet' },
+  { address: '193.175.22.34', mask: '193.174.1', interface: 'Подключение Ethernet' },
+  { address: '193.175.22.35', mask: '193.174.1', interface: 'Подключение Ethernet' }
+];
 
-  rows.sort((a, b) => {
-    const aValue = a.querySelector(`td:nth-child(${field === 'address' ? 1 : field === 'mask' ? 2 : 3})`).textContent;
-    const bValue = b.querySelector(`td:nth-child(${field === 'address' ? 1 : field === 'mask' ? 2 : 3})`).textContent;
-
-    if (field === 'address' || field === 'mask') {
-      return direction === 'asc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
-    } else {
-      return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    }
-  });
-
-  tbody.innerHTML = '';
-
-  rows.forEach(row => tbody.appendChild(row));
-
-  const th = document.querySelector(`th[data-field="${field}"]`);
-  th.setAttribute('data-sort-direction', direction);
-}
+document.addEventListener("DOMContentLoaded", () => new TableGenerator('.table-container', data))
